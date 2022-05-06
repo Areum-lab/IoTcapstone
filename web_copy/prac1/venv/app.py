@@ -1,8 +1,8 @@
 from django.shortcuts import render
-from flask import Flask, session, render_template, redirect, request, url_for
+from flask import Flask, session, render_template, redirect, request, url_for, Response
 from flaskext.mysql import MySQL
 from importlib_metadata import method_cache
-
+import cv2
 
 mysql = MySQL()
 app = Flask(__name__)
@@ -17,17 +17,6 @@ app.secret_key = "1234" #db password
 mysql.init_app(app)
  
 @app.route('/', methods=['GET', 'POST'])
-# @app.route('/'): decorator/ 함수 코드 바꾸지 않고도 함수의 동작 조절가능
-# route('/'): 웹 표현 메소드
-# flask에서는 이러한 decorator가 URL 연결에 활용됨
-
-# GET method: 데이터 읽거나(Read) 검색(Retrieve)시 사용
-# 어떤 정보 가져와서 조회하기 위해 사용하는 방식
-# GET 성공 시, XML이나 JSON과 함께 200(Ok) HTTP 응답코드 리턴
-# GET 실패 시, 404(Not found)나 400(Bad request) 에러 발생
-
-# POST method: 새로운 리소스 생성(create)
-# 데이터를 서버로 제출하여 추가/수정하기 위해 사용하는 방식
 
 
 def main():
@@ -106,5 +95,34 @@ def calendar():
     return render_template('calendar.html')
 
 
+camera = cv2.VideoCapture(0)  # use 0 for web camera
+#  for cctv camera use rtsp://username:password@ip_address:554/user=username_password='password'_channel=channel_number_stream=0.sdp' instead of camera
+# for local webcam use cv2.VideoCapture(0)
+
+def gen_frames():  # generate frame by frame from camera
+    while True:
+        # Capture frame-by-frame
+        success, frame = camera.read()  # read the camera frame
+        if not success:
+            break
+        else:
+            ret, buffer = cv2.imencode('.jpg', frame)
+            frame = buffer.tobytes()
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
+
+
+@app.route('/video_feed')
+def video_feed():
+    #Video streaming route. Put this in the src attribute of an img tag
+    return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+
+@app.route('/stream')
+def index():
+    """Video streaming home page."""
+    return render_template('stream.html')
+
+
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
