@@ -1,20 +1,24 @@
 from django.shortcuts import render
 from flask import Flask, session, render_template, redirect, request, url_for, Response
-from flaskext.mysql import MySQL
+# from flaskext.mysql import MySQL
 from importlib_metadata import method_cache
 import cv2
+import pymysql
+import os
 
-mysql = MySQL()
+
+# mysql = MySQL()
 app = Flask(__name__)
+app.secret_key = os.urandom(24)
 # flask 인스턴스 생성
 # __name__: 현재 활성 모듈 이름 포함 
  
-app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'godqhr1622^^' #MySQL 계정 password
-app.config['MYSQL_DATABASE_DB'] = 'mydb'
-app.config['MYSQL_DATABASE_HOST'] = 'localhost'
-app.secret_key = "1234" #db password
-mysql.init_app(app)
+# app.config['MYSQL_DATABASE_USER'] = 'root'
+# app.config['MYSQL_DATABASE_PASSWORD'] = 'godqhr1622^^' #MySQL 계정 password
+# app.config['MYSQL_DATABASE_DB'] = 'mydb'
+# app.config['MYSQL_DATABASE_HOST'] = 'localhost'
+# app.secret_key = "1234" #db password
+# mysql.init_app(app)
  
 @app.route('/', methods=['GET', 'POST'])
 
@@ -27,9 +31,19 @@ def main():
         pw = request.form['pw']
  
         # MySQL Connection 연결
-        conn = mysql.connect()
+        # conn = mysql.connect()
         # Connection으로부터 Cursor 생성
+        # cursor = conn.cursor()
+
+        #connect to mariaDB
+        conn = pymysql.connect(host='localhost', 
+                                user='root',
+                                password='godqhr1622^^', 
+                                db='mar_db',
+                                port=3307)
         cursor = conn.cursor()
+
+
         # SQL문 실행
         sql = "SELECT id FROM users WHERE id = %s AND pw = %s"
         value = (id, pw)
@@ -59,7 +73,14 @@ def register():
         id = request.form['regi_id']
         pw = request.form['regi_pw']
  
-        conn = mysql.connect()
+        # conn = mysql.connect()
+        # cursor = conn.cursor()
+
+        conn = pymysql.connect(host='localhost', 
+                                user='root',
+                                password='godqhr1622^^', 
+                                db='mar_db',
+                                port=3307)
         cursor = conn.cursor()
  
         sql = "INSERT INTO users VALUES ('%s', '%s')" % (id, pw)
