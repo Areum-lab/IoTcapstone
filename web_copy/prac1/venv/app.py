@@ -1,24 +1,15 @@
-from django.shortcuts import render
 from flask import Flask, session, render_template, redirect, request, url_for, Response
-# from flaskext.mysql import MySQL
 from importlib_metadata import method_cache
 import cv2
 import pymysql
 import os
 
 
-# mysql = MySQL()
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 # flask 인스턴스 생성
 # __name__: 현재 활성 모듈 이름 포함 
  
-# app.config['MYSQL_DATABASE_USER'] = 'root'
-# app.config['MYSQL_DATABASE_PASSWORD'] = 'godqhr1622^^' #MySQL 계정 password
-# app.config['MYSQL_DATABASE_DB'] = 'mydb'
-# app.config['MYSQL_DATABASE_HOST'] = 'localhost'
-# app.secret_key = "1234" #db password
-# mysql.init_app(app)
  
 @app.route('/', methods=['GET', 'POST'])
 
@@ -30,12 +21,14 @@ def main():
         id = request.form['id']
         pw = request.form['pw']
  
-        # MySQL Connection 연결
-        # conn = mysql.connect()
-        # Connection으로부터 Cursor 생성
-        # cursor = conn.cursor()
 
         #connect to mariaDB
+        # conn = pymysql.connect(host='172.20.10.5', 
+        #                         user='test',
+        #                         password='iotcap!', 
+        #                         db='test',
+        #                         port=3306)
+
         conn = pymysql.connect(host='localhost', 
                                 user='root',
                                 password='godqhr1622^^', 
@@ -72,9 +65,12 @@ def register():
     if request.method == 'POST':
         id = request.form['regi_id']
         pw = request.form['regi_pw']
- 
-        # conn = mysql.connect()
-        # cursor = conn.cursor()
+
+        # conn = pymysql.connect(host='172.20.10.5', 
+        #                         user='test',
+        #                         password='iotcap!', 
+        #                         db='test',
+        #                         port=3306)
 
         conn = pymysql.connect(host='localhost', 
                                 user='root',
@@ -87,8 +83,7 @@ def register():
         cursor.execute(sql)
  
         data = cursor.fetchall()
-        # cursor.close()
-        # conn.close()
+
  
         if not data:
             conn.commit()
