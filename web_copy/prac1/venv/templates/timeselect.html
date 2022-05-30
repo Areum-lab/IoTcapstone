@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>TIMESELECT</title>
+
+</head>
+
+<body>
+    <form method="POST" id="authForm">
+        <div class="header">
+            <h3> Select Time & Posture! </h3>
+        </div>
+
+        <div class="choose_t">
+            <h5> 운동 시간 선택 </h5>
+        </div>
+
+        <div class="choose_time">
+            <!-- <label for="time">Time&nbsp&nbsp&nbsp</label>
+            <input type="text " id="time" name="time"> -->
+
+            <input type='radio' id = 'time' name='time' value='30' checked />30초 (초급)
+            <input type='radio' id = 'time' name='time' value='60' />60초 (중급)
+            <input type='radio' id = 'time' name='time' value='90' />90초 (고급)
+            <br><br>
+        </div>
+
+
+        <div class="choose_p">
+            <h5> 운동 종류 선택 </h5>
+        </div>
+        
+        <div class="choose_posture">
+            <input type='radio' id='jeonsa' name='pose' value='0' checked/>전사자세
+            <input type='radio' id='namu' name='pose' value='1' />나무자세
+            <input type='radio' id='goyang' name='pose' value='2' />고양이자세
+            <br><br><br>            
+        </div>
+
+        <input class="submit" type="submit" name="submit" id="submit" style="WIDTH: 183pt" value="GO"/>
+
+    </form>
+    
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            text-align: center;
+            align-items: center;
+
+        }
+
+        .header {
+            padding: 30px;
+            color: lightsalmon;
+            font-size: 30px;
+
+        }
+
+        .choose_t {
+            color: black;
+            font-size: 23px;
+        }
+
+        .choose_time {
+            border: 0;
+            line-height: 2.5;
+            padding: 8px 12px;
+            font-size: 20px;
+            font-weight: 700%;
+            color: lightsalmon;
+            border-radius: 10px;
+        }
+
+        .choose_p {
+            color: black;
+            font-size: 23px;
+        }
+
+        .choose_posture {
+            border: 0;
+            line-height: 2.5;
+            padding: 8px 12px;
+            font-size: 20px;
+            font-weight: 700%;
+            color: lightsalmon;
+            border-radius: 10px;
+        }
+
+
+        .submit {
+            width: 200px;
+            height: 30px;
+            border: 3px solid black;
+            border-color: lightsalmon;
+            border-radius: 5px;
+        }
+    </style>
+
+    
+</body>
+
+
+</html>
