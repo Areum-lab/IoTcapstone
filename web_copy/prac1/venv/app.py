@@ -199,12 +199,22 @@ def return_data():
 camera = cv2.VideoCapture(0)  
 
 def gen_frames():  # generate frame by frame from camera
+    img_num = 1
+    frame_num = 0
     while True:
         success, frame = camera.read()  # read the camera frame
-        frame = cv2.flip(frame, 1)
+        # frame = cv2.flip(frame, 1)
+        str = "/home/pi/input_img/{}.jpg".format(img_num)
         if not success:
             break
         else:
+            if(frame_num == 5) :
+                cv2.imwrite(str, frame)
+                print("Save frame number : ", img_num)
+                img_num += 1
+                frame_num = 0
+            else:
+                frame_num += 1
             ret, buffer = cv2.imencode('.jpg', frame)
             frame = buffer.tobytes()
             yield (b'--frame\r\n'
