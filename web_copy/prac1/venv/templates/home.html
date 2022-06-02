@@ -6,11 +6,9 @@
     <link rel="stylesheet" href="{{url_for('static', filename='home.css')}}" />
 </head>
 <body>
-    <header>
-        <div class="header">
-            <h3> Hello {{name}} ! </h3>
-        </div>
-    </header>
+    <div class="header">
+        <h2 style="color: #2e42a6"><strong> Smart Yoga Partner </strong></h2>
+    </div>
 
     <nav class = "navbar">
         <ul class="navbar__menu">
@@ -18,9 +16,21 @@
             <!-- <li><a href="/health">모니터링</a></li> -->
             <li><a href="/calendar">월간 운동 현황</a></li>
         </ul>
-
     </nav>
+
+    <div class="image">
+        <img src="static/images/home.JPG">
+    </div>
 </body>
+<style>
+    .image {
+        width: 100%;
+        float: center;
+        box-sizing: border-box;
+        text-align: center;
+    }
+
+</style>
 
 
 </html>

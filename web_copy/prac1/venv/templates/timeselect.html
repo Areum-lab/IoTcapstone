@@ -4,13 +4,28 @@
 <head>
     <meta charset="UTF-8">
     <title>TIMESELECT</title>
-
+    <style>
+        @font-face {
+            font-family: 'LeferiPoint-BlackObliqueA';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/LeferiPoint-BlackObliqueA.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }    
+    </style>
 </head>
 
 <body>
+    <div class="gohome">
+        <button class="button" onclick="location.href='/home.html'">홈으로</button>
+    </div>
+
+    <div class="gocalender">
+        <button class="button" onclick="location.href='/calendar'">캘린더</button>
+    </div>
+
     <form method="POST" id="authForm">
         <div class="header">
-            <h3> Select Time & Posture! </h3>
+            <h2 style="color: #2e42a6"><strong> Smart Yoga Partner </strong></h2>
         </div>
 
         <div class="choose_t">
@@ -24,7 +39,7 @@
             <input type='radio' id = 'time' name='time' value='30' checked />30초 (초급)
             <input type='radio' id = 'time' name='time' value='60' />60초 (중급)
             <input type='radio' id = 'time' name='time' value='90' />90초 (고급)
-            <br><br>
+            <br>
         </div>
 
 
@@ -33,10 +48,12 @@
         </div>
         
         <div class="choose_posture">
-            <input type='radio' id='jeonsa' name='pose' value='0' checked/>전사자세
-            <input type='radio' id='namu' name='pose' value='1' />나무자세
-            <input type='radio' id='goyang' name='pose' value='2' />고양이자세
-            <br><br><br>            
+            <input type='radio' name='pose' value='0' checked/>전사 자세
+            <input type='radio' name='pose' value='1' />나무 자세
+            <input type='radio' name='pose' value='2' />삼각 자세
+            <input type='radio' name='pose' value='3' />비둘기 자세
+            <input type='radio' name='pose' value='4' />사이드 플랭크 자세
+            <br><br>  
         </div>
 
         <input class="submit" type="submit" name="submit" id="submit" style="WIDTH: 183pt" value="GO"/>
@@ -45,7 +62,7 @@
     
     <style>
         body {
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: LeferiPoint-BlackObliqueA;
             margin: 0;
             text-align: center;
             align-items: center;
@@ -54,14 +71,16 @@
 
         .header {
             padding: 30px;
-            color: lightsalmon;
+            color: #91c6ff;
             font-size: 30px;
+            font-family: LeferiPoint-BlackObliqueA;
 
         }
 
         .choose_t {
             color: black;
             font-size: 23px;
+            
         }
 
         .choose_time {
@@ -70,13 +89,15 @@
             padding: 8px 12px;
             font-size: 20px;
             font-weight: 700%;
-            color: lightsalmon;
+            color: #91c6ff;
             border-radius: 10px;
+           
         }
 
         .choose_p {
             color: black;
             font-size: 23px;
+            
         }
 
         .choose_posture {
@@ -85,8 +106,9 @@
             padding: 8px 12px;
             font-size: 20px;
             font-weight: 700%;
-            color: lightsalmon;
+            color: #91c6ff;
             border-radius: 10px;
+            
         }
 
 
@@ -94,9 +116,38 @@
             width: 200px;
             height: 30px;
             border: 3px solid black;
-            border-color: lightsalmon;
+            border-color: #91c6ff;
             border-radius: 5px;
+            font-family: LeferiPoint-BlackObliqueA;
         }
+
+        .button {
+            width: 100px;
+            height: 35px;
+            border: none;
+            border-radius: 5px;
+            color: grey;
+            font-family: LeferiPoint-BlackObliqueA;
+        }
+
+        .gohome {
+            width: 100px;
+            height: 35px;
+            border-radius: 5px;
+            position: absolute;
+            top: 30px;
+            left: 30px;
+        }
+
+        .gocalender {
+            width: 100px;
+            height: 35px;
+            border-radius: 5px;
+            position: absolute;
+            top: 30px;
+            right: 30px;
+        }
+
     </style>
 
     

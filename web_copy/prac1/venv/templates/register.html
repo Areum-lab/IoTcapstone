@@ -3,29 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <title>REGISTER</title>
-  
+    <style>
+        @font-face {
+            font-family: 'LeferiPoint-BlackObliqueA';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/LeferiPoint-BlackObliqueA.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }    
+        @font-face {
+            font-family: 'GmarketSansBold';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansBold.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+    </style>
 </head>
 <body>
-    <form method="POST" id="authForm">
+<form method="POST" id="authForm">
   <div class="header">
-      <h3> Register </h3>
-      <p>
-          <label for="regi_id">ID&nbsp&nbsp&nbsp</label>
-          <input type="text " id="regi_id" name="regi_id" >
-      </p>
+    <h2 style="color: #2e42a6"><strong> Smart Yoga Partner </strong></h2>
+    <h5><strong> Register </strong></h5>
+    <p>
+        <label for="regi_id">ID&nbsp&nbsp&nbsp</label>
+        <input type="text " id="regi_id" name="regi_id" placeholder="id" style="font-family:GmarketSansBold;">
+    </p>
  
-      <p>
-          <label for="regi_pw">PW</label>
-          <input type="password" id="regi_pw" name="regi_pw">
-      </p>
-      <input class="submit" type="submit" name="submit" value="submit" style="WIDTH: 183pt"/>
+    <p>
+        <label for="regi_pw">PW&nbsp&nbsp</label>
+        <input type="password" id="regi_pw" name="regi_pw" placeholder="pw" style="font-family:GmarketSansBold;">
+    </p>
+    <input class="submit" type="submit" name="submit" value="submit" style="WIDTH: 183pt"/>
  
     </div>
 </form>
 
 <style>
     body {
-        font-family: Arial, Helvetica, sans-serif;
+        font-family: LeferiPoint-BlackObliqueA;
         margin: 0;
         
     }
@@ -33,8 +47,9 @@
     .header {
         padding: 30px;
         text-align: center;
-        color: lightsalmon;
+        color: #91c6ff;
         font-size: 30px;
+        font-family: LeferiPoint-BlackObliqueA;
         
     }
     
@@ -42,23 +57,28 @@
     #regi_id {
         width: 200px;
         height: 30px;
-        border: 3px solid lightsalmon;
+        border: 3px solid #91c6ff;
         border-radius: 5px;
+        
     }
 
     #regi_pw {
         width: 200px;
         height: 30px;
-        border: 3px solid lightsalmon;
+        border: 3px solid #91c6ff;
         border-radius: 5px;
+        
     }
 
     .submit {
         width: 200px;
         height: 30px;
         border: 3px solid black;
-        border-color: lightsalmon;
+        border-color: #91c6ff;
         border-radius: 5px;
+        background-color: white;
+        box-shadow: 5px 5px 5px lightgrey;
+        font-family: LeferiPoint-BlackObliqueA;
     }
 </style>
  

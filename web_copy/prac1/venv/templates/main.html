@@ -2,6 +2,20 @@
 <html>
     <!DOCTYPE html>
     <html lang="en">
+    <style>
+        @font-face {
+            font-family: 'LeferiPoint-BlackObliqueA';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/LeferiPoint-BlackObliqueA.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }   
+        @font-face {
+            font-family: 'GmarketSansBold';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansBold.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        } 
+    </style>
     <head>
         <meta charset="UTF-8">
         <title>MAIN</title>
@@ -10,17 +24,18 @@
     <form method="POST" id="authForm">
         <div class="header">
             <p>
-            <h3> Hello</h3>
+            <br>
+            <h2 style="color: #2e42a6"><strong> Smart Yoga Partner </strong></h2>
             </p>
-            <h2> Please Sign-In!</h2>
+            <h5><strong> Please Sign-In! </strong></h5>
             <p>
                 <label for="id">ID&nbsp&nbsp&nbsp</label>
-                <input type="text" id="id" name="id" placeholder="id">
+                <input type="text" id="id" name="id" placeholder="id" style="font-family:GmarketSansBold;" >
             </p>
      
             <p>
-                <label for="pw">PW</label>
-                <input type="password" id="pw" name="pw" placeholder="pw">
+                <label for="pw">PW&nbsp&nbsp</label>
+                <input type="password" id="pw" name="pw" placeholder="pw" style="font-family:GmarketSansBold;" >
             </p>
         
         <input class="submit" type="submit" name="sign_in" value="sign in" style="WIDTH: 183pt"/>
@@ -34,29 +49,30 @@
     
 <style>
     body {
-        font-family: Arial, Helvetica, sans-serif;
+        font-family: LeferiPoint-BlackObliqueA;
         margin: 0;     
     }
     
     .header {
         padding: 30px;
         text-align: center;
-        color: lightsalmon;
+        color: #91c6ff;
         font-size: 30px;
+        font-family: LeferiPoint-BlackObliqueA;
     }
     
 
     #id {
         width: 200px;
         height: 30px;
-        border: 3px solid lightsalmon;
+        border: 3px solid #91c6ff;
         border-radius: 5px;
     }
 
     #pw {
         width: 200px;
         height: 30px;
-        border: 3px solid lightsalmon;
+        border: 3px solid #91c6ff;
         border-radius: 5px;
     }
 
@@ -64,8 +80,11 @@
         width: 200px;
         height: 30px;
         border: 3px solid black;
-        border-color: lightsalmon;
+        border-color: #91c6ff;
         border-radius: 5px;
+        background-color: white;
+        box-shadow: 5px 5px 5px lightgrey;
+        font-family: LeferiPoint-BlackObliqueA;
 
     }
 
@@ -77,7 +96,7 @@
         font-weight: 600;
         border-radius: 5px;
         border: 0;
-       
+        font-family: LeferiPoint-BlackObliqueA;
     }
    
 </style>

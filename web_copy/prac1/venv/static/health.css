@@ -1,7 +1,14 @@
 @charset "utf-8";
 
+@font-face {
+    font-family: 'LeferiPoint-BlackObliqueA';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/LeferiPoint-BlackObliqueA.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
 body {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: LeferiPoint-BlackObliqueA;
     margin: 0;
     /* background-color:black; */
     align-items: center;
@@ -11,6 +18,7 @@ body {
 a {
     text-decoration: none;
     color: black;
+    font-family: LeferiPoint-BlackObliqueA;
 }
 
 .left {
@@ -26,15 +34,10 @@ a {
 }
 
 .header {
-    color: lightsalmon;
+    color: #91c6ff;
     font-size: 30px;
     /* background-color: black; */
-}
-
-.top {
-    color: salmon;
-    font-size: 30px;
-    /* background-color: black; */
+    font-family: LeferiPoint-BlackObliqueA;
 }
 
 .menu {
@@ -46,64 +49,13 @@ a {
     text-align: center;
     color: black;
     border-radius: 10px;
-    background-color: lightsalmon;
+    background-color: #91c6ff;
     align-items: center;
+    font-family: LeferiPoint-BlackObliqueA;
 }
 
 .menu:hover {
     background-color: lightslategrey;
+    font-family: LeferiPoint-BlackObliqueA;
 }
 
-/* header 내의 네비게이션 메뉴 배치 */
-/* .navbar {
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 12px;
-    text-align: center;
-
-}
-
-
-.navbar__menu {
-    display: flex;
-    list-style: none;
-    padding-left: 0;
-    display: inline-block;
-}
-
-.navbar__menu li {
-    padding: 10px 12px;
-    float: left;
-}
-
-.navbar__menu li:hover {
-    background-color: lightsalmon;
-    border-radius: 4px;
-}
-
-.navbar__menu a {
-    display: inline-block;
-    padding: 10px;
-}
-*/
-
-/* @media screen and (max-width:768px) {
-    .navbar {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 8px 24px;
-    }
-
-    .navbar__menu {
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-    }
-
-    .navbar__menu li {
-        width: 100%;
-        text-align: center;
-    }
-
-}
-*/

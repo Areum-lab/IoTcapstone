@@ -16,6 +16,8 @@ app.secret_key = os.urandom(24)
 is_success = False
 TODAY = 0
 
+pose_list = ["전사 자세", "나무 자세", "삼각 자세", "비둘기 자세", "사이드 플랭크 자세"]
+
 @app.route('/', methods=['GET', 'POST'])
 def main():
     error = None
@@ -26,11 +28,15 @@ def main():
         id = request.form['id']
         pw = request.form['pw']
  
-        conn = pymysql.connect(host='localhost', 
-                                user='root',
-                                password='godqhr1622^^', 
-                                db='mar_db',
-                                port=3307)
+        # conn = pymysql.connect(host='localhost', 
+        #                         user='root',
+        #                         password='1234', 
+        #                         db='mar_db',
+        #                         port=3306)
+        conn = pymysql.connect(host='172.20.10.5', 
+                                user='test',
+                                password='iotcap!', 
+                                db='test')
         cursor = conn.cursor()
 
 
@@ -64,11 +70,15 @@ def register():
         pw = request.form['regi_pw']
         time = 0
 
-        conn = pymysql.connect(host='localhost', 
-                                user='root',
-                                password='godqhr1622^^', 
-                                db='mar_db',
-                                port=3307)
+        # conn = pymysql.connect(host='localhost', 
+        #                         user='root',
+        #                         password='1234', 
+        #                         db='mar_db',
+        #                         port=3306)
+        conn = pymysql.connect(host='172.20.10.5', 
+                                user='test',
+                                password='iotcap!', 
+                                db='test')
         cursor = conn.cursor()
  
         sql = "INSERT INTO users VALUES ('%s', '%s', '%d')" % (id, pw, time)
@@ -87,6 +97,7 @@ def register():
     return render_template('register.html', error=error)
 
 select_time = 30
+current_pose = 0
 
 @app.route('/timeselect', methods=['GET', 'POST'])
 def timeselect():
@@ -100,33 +111,43 @@ def timeselect():
     if request.method == 'POST':
         print("timeslect_POST")
 
-        global select_time
+        global select_time, current_pose
         select_time = int(request.form['time'])
-        pose = int(request.form['pose'])
+        current_pose = int(request.form['pose'])
 
-        conn = pymysql.connect(host='localhost', 
-                                user='root',
-                                password='godqhr1622^^', 
-                                db='mar_db',
-                                port=3307)
+        # conn = pymysql.connect(host='localhost', 
+        #                         user='root',
+        #                         password='1234', 
+        #                         db='mar_db',
+        #                         port=3306,
+        #                         autocommit=True)
+        conn = pymysql.connect(host='172.20.10.5', 
+                                user='test',
+                                password='iotcap!', 
+                                db='test',
+                                autocommit=True)
         cursor = conn.cursor()
  
-        if (pose==0):
-            src="static/images/goyangee.JPG"
-        elif (pose==1):
-            src="static/images/jeonsa.JPG"
-        elif (pose==2):
-            src="static/images/namu.JPG"
+        if (current_pose==0):
+            src="../static/images/pose_0.JPG" 
+        elif (current_pose==1):
+            src="../static/images/pose_1.JPG"
+        elif (current_pose==2):
+            src="../static/images/pose_2.JPG"
+        elif (current_pose==3):
+            src="../static/images/pose_3.JPG"
+        elif (current_pose==4):
+            src="../static/images/pose_4.JPG"
 
-        sql = "INSERT INTO pose VALUES ('%d', '%d')" % (select_time, pose)
+        sql = "INSERT INTO pose VALUES ('%d', '%d')" % (select_time, current_pose)
         cursor.execute(sql)
 
         cursor.close()
         conn.close()
 
-        return render_template(('health.html'), src=src, name = id)
+        return render_template(('health.html'), src=src, pose=pose_list[current_pose])
 
- 
+
     return render_template('timeselect.html', error=error, name=id)
  
 
@@ -141,7 +162,6 @@ def home():
 
 @app.route('/calendar')
 def calendar():
-
     id = session['login_user']  #로그인 한 id
 
     print("calendar")
@@ -149,11 +169,15 @@ def calendar():
     # DB에서 해당 id를 가진 값들을 뽑으려고!
     sql = "select * from for_calendar where id = '%s'" % (id)
 
-    conn = pymysql.connect(host='localhost', 
-                                user='root',
-                                password='godqhr1622^^', 
-                                db='mar_db',
-                                port=3307)
+    # conn = pymysql.connect(host='localhost', 
+    #                         user='root',
+    #                         password='1234', 
+    #                         db='mar_db',
+    #                         port=3306)
+    conn = pymysql.connect(host='172.20.10.5', 
+                                user='test',
+                                password='iotcap!', 
+                                db='test')
     
     datas_list = []
 
@@ -163,16 +187,26 @@ def calendar():
             result = cur.fetchall() 
             print(result)    
 
+            '''여기'''
+
             for datas in result:    # for문 돌면서 DB에서 뽑은 한개의 행씩 dates에 저장함
                 file_data = dict()  # json파일에 저장하기 위해 딕셔너리 형태로 만듦
                 print(f"{datas[3]}, {datas[2]}")    
                 # for data in datas:
                 #     print(data)
-                file_data["title"] = f"운동시간: {datas[3]}\n소모칼로리: ~~"   # title은 DB의 total_time 값
+                # file_data["title"] = f"운동시간: {datas[3]//3600}시 {datas[3]%3600//60}분 {datas[3]%60}초 if datas[3]//3600 > 0 else {datas[3]%3600//60}분 {datas[3]%60}초\
+# \n소모칼로리: {(datas[3]/30*1.9):.1f}kcal"   # title은 DB의 total_time 값
+                if datas[3]//3600 != 0:
+                    file_data["title"] = f"운동시간: {datas[3]//3600}시간{datas[3]%3600//60}분{datas[3]%60}초\n소모칼로리: {(datas[3]/30*1.9):.1f}kcal"   # title은 DB의 total_time 값
                                                      # 이건 문자열타입으로 저장한건데
                                                      # 숫자형 타입도 ㄱㅊ으면 그냥 file_data["title"] = {dates[3]} 
+                else:
+                    file_data["title"] = f"운동시간: {datas[3]%3600//60}분{datas[3]%60}초\n소모칼로리: {(datas[3]/30*1.9):.1f}kcal"   # title은 DB의 total_time 값
                 file_data["start"] = datas[2]   # start는 DB의 date 값
                 datas_list.append(file_data)    # 리스트에 넣어줌
+            
+            '''여기'''
+
             # result = list(result)
             print(datas_list)
     with open('for_cal.json', 'w', encoding='utf-8') as f:  #json파일에 씀
@@ -199,28 +233,16 @@ def return_data():
 camera = cv2.VideoCapture(0)  
 
 def gen_frames():  # generate frame by frame from camera
-    img_num = 1
-    frame_num = 0
     while True:
         success, frame = camera.read()  # read the camera frame
-        # frame = cv2.flip(frame, 1)
-        str = "/home/pi/input_img/{}.jpg".format(img_num)
+        frame = cv2.flip(frame, 1)
         if not success:
             break
         else:
-            if(frame_num == 5) :
-                cv2.imwrite(str, frame)
-                print("Save frame number : ", img_num)
-                img_num += 1
-                frame_num = 0
-            else:
-                frame_num += 1
             ret, buffer = cv2.imencode('.jpg', frame)
             frame = buffer.tobytes()
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
-
-
 
 
 @app.route('/video_feed')
@@ -238,11 +260,16 @@ def health():
     return render_template('health.html', error=error, name=id)
     
 def update_time(id):
-    conn = pymysql.connect(host='localhost', 
-                                user='root',
-                                password='godqhr1622^^', 
-                                db='mar_db',
-                                port=3307,
+    # conn = pymysql.connect(host='localhost', 
+    #                         user='root',
+    #                         password='1234', 
+    #                         db='mar_db',
+    #                         port=3306,
+    #                         autocommit=True)
+    conn = pymysql.connect(host='172.20.10.5', 
+                                user='test',
+                                password='iotcap!', 
+                                db='test',
                                 autocommit=True)
     cursor = conn.cursor()
     # id에 맞는 time 값 가져오고 더하기
@@ -274,36 +301,86 @@ def update_time(id):
 
 
 def get_info(id):
+    print(f"get_info의 {id}")
     global is_success
 
     while True:
         print(f"get_info -- {is_success}")
         if is_success:
             break
-        conn = pymysql.connect(host='localhost', 
-                                user='root',
-                                password='godqhr1622^^', 
-                                db='mar_db',
-                                port=3307)
+        # conn = pymysql.connect(host='localhost', 
+        #                         user='root',
+        #                         password='1234', 
+        #                         db='mar_db',
+        #                         port=3306)
+        conn = pymysql.connect(host='172.20.10.5', 
+                                user='test',
+                                password='iotcap!', 
+                                db='test')
         cursor = conn.cursor()
 
         # SQL문 실행
-        sql = "SELECT * FROM info"
+        # sql = "SELECT * FROM info"
+        sql = "SELECT * FROM vgg_res"
         cursor.execute(sql)
     
         # cursor의 data fetch
         data = cursor.fetchall()
 
-        json_data = json.dumps({'success': data[0][0], 'booool': data[0][1]})
+        '''여기'''
+        print(f"my_out: {current_pose == data[0][1]}")
+        print(f"current_pose: {current_pose} / data[0][1]: {data[0][1]}")
+        if current_pose == data[0][1]:
+            mysrc = "잘하고 있습니다."
+        elif data[0][1] == 11 or data[0][1] == 15:
+            mysrc = "운동을 시작하세요."
+        elif current_pose == 0: #전사자세
+            if data[0][1] == 5:
+                mysrc = "팔을 수평으로 곧게 뻗으세요."
+            elif data[0][1] == 6:
+                mysrc = "허리를 수직으로 곧게 유지하세요."
+            elif data[0][1] == 7:
+                mysrc = "무릎이 발끝을 넘어가지 않게 90도로 굽히세요."
+            else: 
+                mysrc = "동작을 정확히 따라하세요."
+        elif current_pose == 1: #나무자세
+            if data[0][1] == 8:
+                mysrc = "한쪽 다리를 무릎에 정확히 올리세요."
+            else: 
+                mysrc = "동작을 정확히 따라하세요."
+        elif current_pose == 2: #삼각자세~~
+            if data[0][1] == 9:
+                mysrc = "팔을 수직으로 곧게 뻗으세요."
+            elif data[0][1] == 10:
+                mysrc = "양쪽 골반을 수평으로 유지하세요."
+            else: 
+                mysrc = "동작을 정확히 따라하세요."
+        elif current_pose == 3: #비둘기 자세
+            if data[0][1] == 12:
+                mysrc = "한쪽 팔꿈치에 뒷발을 걸고 반대쪽 손을 머리 뒤로 깍지를 끼세요."
+            elif data[0][1] == 13:
+                mysrc = "허리를 수직으로 곧게 유지하세요."
+            else: 
+                mysrc = "동작을 정확히 따라하세요."
+        elif current_pose == 4: #사이드 플랭크
+            if data[0][1] == 14:
+                mysrc = "몸을 일자로 펴세요."
+            else:
+                mysrc = "동작을 정확히 따라하세요."
+
+        '''여기'''
+
+        json_data = json.dumps({'success': data[0][0], 'str': mysrc})
         yield f"data:{json_data}\n\n"
         print(f"{json_data}\n\n")
-        time.sleep(0.5)
+
+        # time.sleep(0.5)
         cursor.close()
         conn.close()
             
         if int(select_time) <= int(data[0][0]):
             update_time(id) # 총 시간 구하는 함수 실행
-            json_data = json.dumps({'success': 9999, 'booool': 9999})
+            json_data = json.dumps({'success': 9999, 'str': 9999})
             yield f"data:{json_data}\n\n"
             is_success = True
             break

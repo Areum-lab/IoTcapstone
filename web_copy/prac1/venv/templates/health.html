@@ -11,18 +11,17 @@
 </head>
 <body>
     <div class="header" id="header">
-        <h3> hello {{name}} ! </h3>
-        <p id="success"></p>
+        <!-- <h2 style="color: #2e42a6"><strong> Smart Yoga Partner </strong></h2> -->
+        <h5><strong> {{ pose }} </strong></h5>
+        <p id="success"><strong></strong></p>
     </div>
-
-        <div class = "left">
-
+    <div class = "left">
+        <img src={{ src }} width="100%" height="600px">
     </div>
 
 <div class = "right">
 
-    <h3 class="mt-5"></h3>
-    <img src="{{ url_for('video_feed') }}" width="100%"> 
+    <img src="{{ url_for('video_feed') }}" width="100%" height="600px"> 
 
 </div>
 
@@ -31,29 +30,26 @@
     var source = new EventSource("/info");
     source.addEventListener('message', function(e) {
         var data = JSON.parse(e.data);
-        //document.write("hihi, ");
+        // document.write(e.data);
         if (data.success == 9999){
-            document.getElementById("success").innerHTML = "Finish";
+            // document.getElementById("success").innerHTML = "Finish";
+            //여기여기
+            document.getElementById("success").innerHTML = "운동이 끝났습니다.";
+            //여기여기
             source.removeEventListener('message', arguments.callee)
             setTimeout(function () {
                     location.href = "/timeselect" //timeselect로 이동
-                }, 3000); //3초 타이머
+                }, 2000); //2초 타이머
+            // sleep(3000);
 
         }else{
-            document.getElementById("success").innerHTML = "success: " + String(data.success) + ", result: " + String(data.booool);
+            //여기여기
+            document.getElementById("success").innerHTML = String(data.success) + "<br>" + String(data.booool);
+            //여기여기
+            // document.getElementById("success").innerHTML = "success: " + String(data.success) + ", booool: " + String(data.booool);
         }
     },false);
     
-
-    function display_image(src, width, height) {
-        var a = document.createElement("img");
-        a.src = src;
-        a.width = width;
-        a.height = height;
-        document.body.appendChild(a);
-    }
-
-    display_image('{{ src }}', 700, 600);
 
 </script>
 
