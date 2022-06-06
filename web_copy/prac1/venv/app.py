@@ -233,14 +233,26 @@ def return_data():
 camera = cv2.VideoCapture(0)  
 
 def gen_frames():  # generate frame by frame from camera
+    img_num = 1
+    frame_num = 0
     while True:
         success, frame = camera.read()  # read the camera frame
+        str = "/home/pi/input_img/{}.jpg".format(img_num)
         frame = cv2.flip(frame, 1)
         if not success:
             break
         else:
+            if frame_num == 5:
+                cv2.imwrite(str,frame)
+                frame_num = 0
+                print("Save frame number : ", img_num)
+                img_num += 1
+            else:
+                frame_num += 1
+
             ret, buffer = cv2.imencode('.jpg', frame)
             frame = buffer.tobytes()
+            cv2.waitKey(200)
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
 
@@ -330,43 +342,31 @@ def get_info(id):
         '''여기'''
         print(f"my_out: {current_pose == data[0][1]}")
         print(f"current_pose: {current_pose} / data[0][1]: {data[0][1]}")
-        if current_pose == data[0][1]:
-            mysrc = "잘하고 있습니다."
-        elif data[0][1] == 11 or data[0][1] == 15:
+        if data[0][1] == 11 or data[0][1] == 15:    #가만히 있을 때
             mysrc = "운동을 시작하세요."
-        elif current_pose == 0: #전사자세
-            if data[0][1] == 5:
+        elif data[0][2] == 1: #우선 동작은 맞을 때
+            if current_pose == data[0][1]:
+                mysrc = "잘하고 있습니다."
+            elif data[0][1] == 5:
                 mysrc = "팔을 수평으로 곧게 뻗으세요."
             elif data[0][1] == 6:
                 mysrc = "허리를 수직으로 곧게 유지하세요."
             elif data[0][1] == 7:
                 mysrc = "무릎이 발끝을 넘어가지 않게 90도로 굽히세요."
-            else: 
-                mysrc = "동작을 정확히 따라하세요."
-        elif current_pose == 1: #나무자세
-            if data[0][1] == 8:
+            elif data[0][1] == 8:
                 mysrc = "한쪽 다리를 무릎에 정확히 올리세요."
-            else: 
-                mysrc = "동작을 정확히 따라하세요."
-        elif current_pose == 2: #삼각자세~~
-            if data[0][1] == 9:
+            elif data[0][1] == 9:
                 mysrc = "팔을 수직으로 곧게 뻗으세요."
             elif data[0][1] == 10:
                 mysrc = "양쪽 골반을 수평으로 유지하세요."
-            else: 
-                mysrc = "동작을 정확히 따라하세요."
-        elif current_pose == 3: #비둘기 자세
-            if data[0][1] == 12:
+            elif data[0][1] == 12:
                 mysrc = "한쪽 팔꿈치에 뒷발을 걸고 반대쪽 손을 머리 뒤로 깍지를 끼세요."
             elif data[0][1] == 13:
                 mysrc = "허리를 수직으로 곧게 유지하세요."
-            else: 
-                mysrc = "동작을 정확히 따라하세요."
-        elif current_pose == 4: #사이드 플랭크
-            if data[0][1] == 14:
+            elif data[0][1] == 14:
                 mysrc = "몸을 일자로 펴세요."
-            else:
-                mysrc = "동작을 정확히 따라하세요."
+        else:   #동작 자체가 틀릴 때
+            mysrc = "동작을 정확히 따라하세요."
 
         '''여기'''
 
