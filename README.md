@@ -6,4 +6,4 @@ GPU server 코드: https://github.com/Areum-lab/IoTcapstone/blob/main/GPUserver-
 
 dataset 제작 코드: ~~~~~~
 
-딥러닝 모델 학습 코드: ~~~~~~~
+딥러닝 모델 학습 코드: https://github.com/Areum-lab/IoTcapstone/blob/main/GPUserver/training.ipynb
