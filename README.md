@@ -2,7 +2,7 @@
 ### 스마트 요가 시스템
 Web: https://github.com/Areum-lab/IoTcapstone/tree/main/web_copy/prac1/venv
 
-GPU server 코드: ~~~~~~
+GPU server 코드: https://github.com/Areum-lab/IoTcapstone/blob/main/GPUserver-main/server_main.py
 
 dataset 제작 코드: ~~~~~~
 
