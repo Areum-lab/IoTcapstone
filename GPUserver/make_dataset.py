@@ -19,48 +19,33 @@ POSE_PAIRS_BODY_25 = [[0, 1], [1, 2], [1, 5], [1, 8], [8, 9], [8, 12], [9, 10], 
 
 def output_keypoints(image_path, net, threshold=0.1):
     frame = cv2.imread(image_path)
-    # out_frame = frame.copy()
-    #resize 오류나서 그냥 frame.copy()로 하긴 했는데 cv.resize가 왜 안되는지 확인
-    # out_frame = cv2.resize(frame,(256, 256))
     out_frame = cv2.resize(frame,(224, 224))
     frameHeight, frameWidth, _ = frame.shape
 
-    # Specify the input image dimensions
     inWidth = 368
     inHeight = 368
 
-    # Prepare the frame to be fed to the network (전처리)
     inpBlob = cv2.dnn.blobFromImage(frame, 1.0 / 255, (inWidth, inHeight), (0, 0, 0), swapRB=False, crop=False)
 
-    # Set the prepared object as the input blob of the network
     net.setInput(inpBlob)
 
     output = net.forward()
 
     H = output.shape[2]
     W = output.shape[3]
-    # Empty list to store the detected keypoints
     points = []
     num=0
-    for i in range(len(BODY_PARTS_BODY_25)): #body25이기 때문에 range(len(BODY_PARTS_BODY_25))가 맞는데, 16~24까지 keypoint 필요 X... 이러면 coco가 낫나..?
+    for i in range(len(BODY_PARTS_BODY_25)): #body25이기 때문에 range(len(BODY_PARTS_BODY_25))가 맞는데, 16~24까지 keypoint 필요 X
         probMap = output[0, i, :, :]
 
         minVal, prob, minLoc, point = cv2.minMaxLoc(probMap)
-        #prob = 있을 확률
-        #point = x,y좌표
 
         # Scale the point to fit on the original image
         x = (224 * point[0]) / W
         y = (224 * point[1]) / H
 
         if prob > threshold :
-            # print(image_path)
             num+=1
-            '''아래 두줄 주석 지우기'''
-            # cv2.circle(out_frame, (int(x), int(y)), 5, (0, 255, 255), thickness=-1, lineType=cv2.FILLED)
-            # cv2.putText(out_frame, "{}".format(i), (int(x), int(y)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1, lineType=cv2.LINE_AA)
-
-            # Add the point to the list if the probability is greater than the threshold
             points.append((int(x), int(y)))
         else :
             points.append(None)
@@ -69,22 +54,8 @@ def output_keypoints(image_path, net, threshold=0.1):
     else:
         return points, out_frame
     
-
-    # cv2.imshow("Output-Keypoints",frame)
-    # print(f'input frame shape: {frame.shape}')
-    # cv2.imwrite(str, out_frame)
-    # cv2.waitKey(0)
-    # cv2.destroyAllWindows()
-    # f.close()
-        
-    # print(points)
-
-    # return points, out_frame
-
 def output_keypoints_with_lines(file_num, POSE_PAIRS_BODY_25, frame, points):
     frameCopy = frame.copy()
-    # str = './last.jpg'
-    # print(str)
 
     for pair in POSE_PAIRS_BODY_25:
         partA = pair[0]
@@ -96,10 +67,6 @@ def output_keypoints_with_lines(file_num, POSE_PAIRS_BODY_25, frame, points):
             cv2.line(frameCopy, points[partA], points[partB], (0, 255, 0), 3)
 
     cv2.imwrite('./dataset/{}/{}.jpg'.format(dir_num, file_num), frameCopy)
-    # cv2.imwrite('./0.jpg', frameCopy)
-    # print(f'frameCopy shape: {frameCopy.shape}')
-    # cv2.imwrite(str, frameCopy)
-    # # cv2.waitKey(0)
     cv2.destroyAllWindows()
     file_num += 1
     return frameCopy
@@ -107,7 +74,6 @@ def output_keypoints_with_lines(file_num, POSE_PAIRS_BODY_25, frame, points):
 
 class Watcher:
     DIRECTORY_WATCH = "z:\input_img" #폴더 경로 지정
-    # DIRECTORY_WATCH = "./event_dir" #폴더 경로 지정
     
 
     def __init__(self):
@@ -122,7 +88,6 @@ class Watcher:
         try:
             while True:
                 time.sleep(0.5)
-                # print("try")
         except:
             self.observer.stop()
             print("Error")
@@ -140,9 +105,6 @@ class Handler(FileSystemEventHandler):    #이벤트 정의
         
         print(f'{time.time() - start_time}sec')
 
-    # @staticmethod
-    # def on_any_event(event):   #모든 이벤트 발생시
-    #     print('이벤트 발생시 동작정의')
 
 dir_num = sys.argv[1]
 file_num = sys.argv[2]
@@ -157,4 +119,3 @@ if __name__ == '__main__':
     w = Watcher()
     w.run()
     os.system("powershell.exe rm z:\input_img/*")  #z:\input_img 디렉터리 내 모든 파일 삭제
-    print("프로세스 종료~~~")
